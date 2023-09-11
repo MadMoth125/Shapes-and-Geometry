@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Shape : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public float Area { get; protected set; }
+	public float Perimeter { get; protected set; }
+	
+	public Shape() { }
+	
+	public virtual float CalculateArea()
+	{
+		return 0;
+	}
+	
+	public virtual float CalculatePerimeter()
+	{
+		return 0;
+	}
 }
