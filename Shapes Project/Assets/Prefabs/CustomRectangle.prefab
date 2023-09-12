@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6194914754444729271}
   - component: {fileID: 8252367901457058975}
   m_Layer: 0
-  m_Name: CustomSquare
+  m_Name: CustomRectangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
