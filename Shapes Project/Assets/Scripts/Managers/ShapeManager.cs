@@ -11,6 +11,8 @@ public class ShapeManager : MonoBehaviour
 	private GameObject _savedObject;
 	[SerializeField] private GameObject[] shapePrefabs;
 	
+	
+	
 	public void OnCircleSelected()
 	{
 		if (shapePrefabs.Length == 0)
@@ -94,7 +96,8 @@ public class ShapeManager : MonoBehaviour
 			Debug.LogError("Could not find prefab with name \"CustomTriangle\"!");
 		}
 	}
-	
+
+	#region Prefab Searching
 	private bool FindPrefab(string prefabName, out GameObject prefab)
 	{
 		prefab = shapePrefabs.FirstOrDefault(shapePrefab => shapePrefab.name == prefabName);
@@ -105,4 +108,5 @@ public class ShapeManager : MonoBehaviour
 	{
 		return shapePrefabs.FirstOrDefault(shapePrefab => shapePrefab.name == prefabName);
 	}
+	#endregion
 }
