@@ -15,14 +15,14 @@ public class Triangle : Shape
 		SideLengthC = sideLengthC;
 	}
 	
-	public override float CalculateArea()
+	public override float GetShapeArea()
 	{
 		float s = (SideLengthA + SideLengthB + SideLengthC) / 2;
 		Area = Mathf.Sqrt(s * (s - SideLengthA) * (s - SideLengthB) * (s - SideLengthC));
 		return Area;
 	}
 	
-	public override float CalculatePerimeter()
+	public override float GetShapePerimeter()
 	{
 		Perimeter = SideLengthA + SideLengthB + SideLengthC;
 		return Perimeter;

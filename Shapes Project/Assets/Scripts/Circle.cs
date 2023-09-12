@@ -11,13 +11,13 @@ public class Circle : Shape
 		Radius = radius;
 	}
 	
-	public override float CalculateArea()
+	public override float GetShapeArea()
 	{
 		Area = Mathf.PI * Mathf.Pow(Radius, 2);
 		return Area;
 	}
 	
-	public override float CalculatePerimeter()
+	public override float GetShapePerimeter()
 	{
 		Perimeter = 2 * Mathf.PI * Radius;
 		return Perimeter;

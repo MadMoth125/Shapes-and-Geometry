@@ -9,12 +9,12 @@ public class Shape : MonoBehaviour
 	
 	public Shape() { }
 	
-	public virtual float CalculateArea()
+	public virtual float GetShapeArea()
 	{
 		return 0;
 	}
 	
-	public virtual float CalculatePerimeter()
+	public virtual float GetShapePerimeter()
 	{
 		return 0;
 	}

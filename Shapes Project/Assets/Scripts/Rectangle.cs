@@ -13,13 +13,13 @@ public class Rectangle : Shape
         Width = width;
     }
     
-    public override float CalculateArea()
+    public override float GetShapeArea()
     {
         Area = Length * Width;
         return Area;
     }
     
-    public override float CalculatePerimeter()
+    public override float GetShapePerimeter()
     {
         Perimeter = 2 * (Length + Width);
         return Perimeter;
