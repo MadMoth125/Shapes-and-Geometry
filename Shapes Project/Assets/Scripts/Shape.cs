@@ -20,7 +20,7 @@ public class Shape : MonoBehaviour
 	/// <returns>The area of the perimeter.</returns>
 	public virtual float GetShapePerimeter() { return 0; }
 
-	protected virtual void Draw()
+	public virtual void Draw()
 	{
 	}
 }

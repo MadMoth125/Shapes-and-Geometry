@@ -1,4 +1,5 @@
 using System;
+using Interfaces;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ using UnityEngine;
 #endif
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Rectangle : Shape
+public class Rectangle : Shape, IDrawable
 {
     public Rectangle(float width, float height)
     {

@@ -1,4 +1,5 @@
 using System;
+using Interfaces;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 [Tooltip("This class uses MeshGeneration to render a triangle instead of a SpriteRenderer.")]
-public class Triangle : Shape
+public class Triangle : Shape, IDrawable
 {
 	public Triangle(float legX, float legY)
 	{

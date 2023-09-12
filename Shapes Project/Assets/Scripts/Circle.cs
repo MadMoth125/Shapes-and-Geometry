@@ -1,4 +1,5 @@
 using System;
+using Interfaces;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ using UnityEngine;
 
 #endif
 
-public class Circle : Shape
+public class Circle : Shape, IDrawable
 {
 	public Circle(float radius)
 	{
