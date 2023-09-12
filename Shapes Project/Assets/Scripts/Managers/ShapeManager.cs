@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class ShapeManager : MonoBehaviour
 {
-	[SerializeField] private Transform shapePosition;
-	
 	private GameObject _currentShape;
 	private GameObject _savedObject;
 	[SerializeField] private GameObject[] shapePrefabs;
-	
-	
+	[SerializeField] private Transform shapePosition;
+
+	public GameObject UITarget;
 	
 	public void OnCircleSelected()
 	{
