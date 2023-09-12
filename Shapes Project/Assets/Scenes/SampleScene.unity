@@ -783,5 +783,9 @@ PrefabInstance:
       propertyPath: autoOffset
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5456553421990745863, guid: 41620439afa918c4e880f6ae2ac13ae1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41620439afa918c4e880f6ae2ac13ae1, type: 3}
