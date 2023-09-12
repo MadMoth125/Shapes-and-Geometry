@@ -12,7 +12,13 @@ using UnityEngine;
 [Tooltip("This class uses MeshGeneration to render a triangle instead of a SpriteRenderer.")]
 public class Triangle : Shape
 {
-	public Triangle(float legX, float legY, bool shouldAutoOffset = true)
+	public Triangle(float legX, float legY)
+	{
+		legWidth = legX;
+		legHeight = legY;
+	}
+	
+	public Triangle(float legX, float legY, bool shouldAutoOffset)
 	{
 		legWidth = legX;
 		legHeight = legY;
@@ -41,18 +47,8 @@ public class Triangle : Shape
 	
 	private void Awake()
 	{
-#if UNITY_EDITOR
 		InitMesh();
 		GenerateTriangle();
-#endif
-	}
-
-	private void Start()
-	{
-#if !UNITY_EDITOR
-		InitMesh();
-		GenerateTriangle();
-#endif
 	}
 
 	private void Update()
@@ -62,14 +58,12 @@ public class Triangle : Shape
 	
 	public override float GetShapeArea()
 	{
-		Area = (legWidth * legHeight) / 2;
-		return Area;
+		return (legWidth * legHeight) / 2;
 	}
 
 	public override float GetShapePerimeter()
 	{
-		Perimeter = legWidth + legHeight + GetHypotenuse();
-		return Perimeter;
+		return legWidth + legHeight + GetHypotenuse();
 	}
 	
 	/// <summary>
@@ -78,8 +72,7 @@ public class Triangle : Shape
 	/// <returns>The hypotenuse of the triangle</returns>
 	public float GetHypotenuse()
 	{
-		Hypotenuse = Mathf.Sqrt(Mathf.Pow(legWidth, 2) + Mathf.Pow(legHeight, 2));
-		return Hypotenuse;
+		return Mathf.Sqrt(Mathf.Pow(legWidth, 2) + Mathf.Pow(legHeight, 2));
 	}
 	
 	#region Mesh Generation

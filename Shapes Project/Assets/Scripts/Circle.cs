@@ -15,6 +15,7 @@ public class Circle : Shape
 		this.radius = radius;
 	}
 	
+	[Range(0.1f, 5.0f)]
 	public float radius;
 	private float _previousRadius;
 	
@@ -30,15 +31,22 @@ public class Circle : Shape
 		}
 	}
 	
+	/// <summary>
+	/// Get the diameter of the circle.
+	/// </summary>
+	/// <returns>The diameter of the circle.</returns>
+	public float GetDiameter()
+	{
+		return radius * 2f;
+	}
+	
 	public override float GetShapeArea()
 	{
-		Area = Mathf.PI * Mathf.Pow(radius, 2);
-		return Area;
+		return Mathf.PI * Mathf.Pow(radius, 2);
 	}
 	
 	public override float GetShapePerimeter()
 	{
-		Perimeter = 2 * Mathf.PI * radius;
-		return Perimeter;
+		return 2 * Mathf.PI * radius;
 	}
 }

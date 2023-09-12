@@ -40,13 +40,11 @@ public class Rectangle : Shape
 
     public override float GetShapeArea()
     {
-        Area = height * width;
-        return Area;
+        return height * width;
     }
     
     public override float GetShapePerimeter()
     {
-        Perimeter = 2 * (height + width);
-        return Perimeter;
+        return 2 * (height + width);
     }
 }
