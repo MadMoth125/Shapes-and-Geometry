@@ -1,27 +1,40 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
+
 [ExecuteInEditMode]
+
+#endif
+
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 [Tooltip("This class uses MeshGeneration to render a triangle instead of a SpriteRenderer.")]
 public class Triangle : Shape
 {
-	public Triangle(float legWidth, float legHeight, bool autoOffset = true)
+	public Triangle(float legX, float legY, bool shouldAutoOffset = true)
 	{
-		this.legWidth = legWidth;
-		this.legHeight = legHeight;
-		this.autoOffset = autoOffset;
+		legWidth = legX;
+		legHeight = legY;
+		autoOffset = shouldAutoOffset;
 	}
 	
 	[Range(0.1f, 10.0f)]
 	public float legWidth;
 	[Range(0.1f, 10.0f)]
 	public float legHeight;
+	
+	private float _previousLegWidth;
+	private float _previousLegHeight;
+	
 	public bool autoOffset;
+	private bool _previousAutoOffset;
+	
 	private Vector3 LegWidthVector => new(legWidth, 0f, 0f);
 	private Vector3 LegHeightVector => new(0f, legHeight, 0f);
+	private bool ShouldUpdate => legWidth != _previousLegWidth || legHeight != _previousLegHeight || autoOffset != _previousAutoOffset;
 	
 	/// <summary>
 	/// The hypotenuse of the triangle.
@@ -30,8 +43,18 @@ public class Triangle : Shape
 	
 	private void Awake()
 	{
+#if UNITY_EDITOR
 		InitMesh();
 		GenerateTriangle();
+#endif
+	}
+
+	private void Start()
+	{
+#if !UNITY_EDITOR
+		InitMesh();
+		GenerateTriangle();
+#endif
 	}
 
 	private void Update()
@@ -92,40 +115,49 @@ public class Triangle : Shape
 	
 	private void GenerateTriangle()
 	{
-		UpdateVerts();
-		UpdateNormals();
-		UpdateUVs();
+		if (ShouldUpdate)
+		{
+			_previousLegHeight = legHeight;
+			_previousLegWidth = legWidth;
+			_previousAutoOffset = autoOffset;
+			
+			UpdateVerts();
+			UpdateNormals();
+			UpdateUVs();
 
-		// Assign data to the mesh
-		_mesh.vertices = _vertices;
-		_mesh.triangles = _triangles;
-		_mesh.normals = _normals;
-		_mesh.uv = _uv;
+			// Assign data to the mesh
+			_mesh.vertices = _vertices;
+			_mesh.triangles = _triangles;
+			_mesh.normals = _normals;
+			_mesh.uv = _uv;
+		}
 	}
 	
 	private void UpdateVerts()
 	{
-		// If autoOffset is true, offset the mesh so that the origin is at the center of the triangle
-		if (autoOffset)
 		{
-			_meshOffset.x = legWidth / 2;
-			_meshOffset.y = legHeight / 2;
-			_meshOffset.z = 0f;
-		}
-		else
-		{
-			_meshOffset = Vector3.zero;
-		}
+			// If autoOffset is true, offset the mesh so that the origin is at the center of the triangle
+			if (autoOffset)
+			{
+				_meshOffset.x = legWidth / 2;
+				_meshOffset.y = legHeight / 2;
+				_meshOffset.z = 0f;
+			}
+			else
+			{
+				_meshOffset = Vector3.zero;
+			}
 		
-		_vertices[0] = Vector3.zero; // Vertex at the origin
-		_vertices[1] = -LegWidthVector; // Vertex at the end of the legWidth
-		_vertices[2] = LegHeightVector; // Vertex at the end of the legHeight
+			_vertices[0] = Vector3.zero; // Vertex at the origin
+			_vertices[1] = -LegWidthVector; // Vertex at the end of the legWidth
+			_vertices[2] = LegHeightVector; // Vertex at the end of the legHeight
 		
-		// applying the offset to the vertices in their respective axes
-		for (int i = 0; i < _vertices.Length; i++)
-		{
-			_vertices[i].x += _meshOffset.x;
-			_vertices[i].y -= _meshOffset.y;
+			// applying the offset to the vertices in their respective axes
+			for (int i = 0; i < _vertices.Length; i++)
+			{
+				_vertices[i].x += _meshOffset.x;
+				_vertices[i].y -= _meshOffset.y;
+			}
 		}
 	}
 
