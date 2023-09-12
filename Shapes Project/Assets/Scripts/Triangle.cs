@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-public class TriangleGenerator : Shape
+public class Triangle : Shape
 {
 	[Range(0.1f, 10.0f)]
 	public float legWidth = 1.0f;
