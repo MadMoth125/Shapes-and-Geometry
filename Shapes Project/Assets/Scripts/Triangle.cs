@@ -40,11 +40,6 @@ public class Triangle : Shape
 	private Vector3 LegHeightVector => new(0f, legHeight, 0f);
 	private bool ShouldUpdate => legWidth != _previousLegWidth || legHeight != _previousLegHeight || autoOffset != _previousAutoOffset;
 	
-	/// <summary>
-	/// The hypotenuse of the triangle.
-	/// </summary>
-	public float Hypotenuse { get; protected set; }
-	
 	private void Awake()
 	{
 		InitMesh();
