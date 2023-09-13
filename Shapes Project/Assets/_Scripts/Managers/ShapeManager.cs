@@ -9,8 +9,11 @@ public class ShapeManager : MonoBehaviour
 	public delegate void ShapeSelect(ShapeStruct selectedShape);
 	public event ShapeSelect OnShapeSelected;
 	
-	[SerializeField] private ShapeStruct[] shapePrefabs;
-	[SerializeField] private Transform shapePosition;
+	[SerializeField]
+	private ShapeStruct[] shapePrefabs;
+	
+	[SerializeField]
+	private Transform shapePosition;
 
 	private GameObject _currentShape;
 	private GameObject _savedObject;

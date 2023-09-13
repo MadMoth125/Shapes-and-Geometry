@@ -6,13 +6,13 @@ using TMPro;
 public class CircleRadiusElement : MonoBehaviour
 {
     public string sliderText = "Circle Radius:";
-    public TextMeshProUGUI TextRef { get; private set; }
+    public TextMeshProUGUI TextRadiusRef { get; private set; }
     public Slider SliderRef { get; private set; }
 
     private void OnEnable()
     {
-        TextRef = GetComponentInChildren<TextMeshProUGUI>();
-        if (TextRef == null) Debug.LogError("Text not found!");
+        TextRadiusRef = GetComponentInChildren<TextMeshProUGUI>();
+        if (TextRadiusRef == null) Debug.LogError("Text not found!");
         
         SliderRef = GetComponentInChildren<Slider>();
         if (SliderRef == null) Debug.Log("Slider not found!");
@@ -27,6 +27,6 @@ public class CircleRadiusElement : MonoBehaviour
 
     public void OnSliderUpdated(float value)
     {
-        TextRef.text = $"{sliderText} {value:F}";
+        TextRadiusRef.text = $"{sliderText} {value:F}";
     }
 }
