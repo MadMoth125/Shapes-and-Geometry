@@ -7,7 +7,7 @@ using _Scripts;
 public class ShapeManager : MonoBehaviour
 {
 	public delegate void ShapeSelect(ShapeStruct selectedShape);
-	public event ShapeSelect OnShapeSelect;
+	public event ShapeSelect OnShapeSelected;
 	
 	[SerializeField] private ShapeStruct[] shapePrefabs;
 	[SerializeField] private Transform shapePosition;
@@ -17,92 +17,25 @@ public class ShapeManager : MonoBehaviour
 	
 	public void OnCircleSelected()
 	{
-		if (shapePrefabs.Length == 0)
-		{
-			Debug.LogError("No shape prefabs assigned to ShapeManager!");
-			return;
-		}
+		if (!IsValidLength()) return;
 
-		ShapeStruct tempPrefab = FindPrefab("CustomCircle");
-
-		if (_currentShape == tempPrefab.ShapePrefab)
-		{
-			return; // No need to instantiate if it's already the selected shape
-		}
-
-		_currentShape = tempPrefab.ShapePrefab;
-
-		if (_currentShape != null)
-		{
-			Destroy(_savedObject);
-			_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation);
-			
-			OnShapeSelect?.Invoke(tempPrefab);
-		}
-		else
-		{
-			Debug.LogError("Could not find prefab with name \"CustomCircle\"!");
-		}
+		AttemptCreateShape("CustomCircle", out ShapeStruct tempPrefab);
 	}
 
 	public void OnRectangleSelected()
 	{
-		if (shapePrefabs.Length == 0)
-		{
-			Debug.LogError("No shape prefabs assigned to ShapeManager!");
-			return;
-		}
+		if (!IsValidLength()) return;
 
-		ShapeStruct tempPrefab = FindPrefab("CustomRectangle");
-
-		if (_currentShape == tempPrefab.ShapePrefab)
-		{
-			return; // No need to instantiate if it's already the selected shape
-		}
-
-		_currentShape = tempPrefab.ShapePrefab;
-
-		if (_currentShape != null)
-		{
-			Destroy(_savedObject);
-			_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation);
-			
-			OnShapeSelect?.Invoke(tempPrefab);
-		}
-		else
-		{
-			Debug.LogError("Could not find prefab with name \"CustomRectangle\"!");
-		}
+		AttemptCreateShape("CustomRectangle", out ShapeStruct tempPrefab);
 	}
 	
 	public void OnTriangleSelected()
 	{
-		if (shapePrefabs.Length == 0)
-		{
-			Debug.LogError("No shape prefabs assigned to ShapeManager!");
-			return;
-		}
+		if (!IsValidLength()) return;
 
-		ShapeStruct tempPrefab = FindPrefab("CustomTriangle");
-
-		if (_currentShape == tempPrefab.ShapePrefab)
-		{
-			return; // No need to instantiate if it's already the selected shape
-		}
-
-		_currentShape = tempPrefab.ShapePrefab;
-
-		if (_currentShape != null)
-		{
-			Destroy(_savedObject);
-			_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation);
-			
-			OnShapeSelect?.Invoke(tempPrefab);
-		}
-		else
-		{
-			Debug.LogError("Could not find prefab with name \"CustomTriangle\"!");
-		}
+		AttemptCreateShape("CustomTriangle", out ShapeStruct tempPrefab);
+		
+		
 	}
 
 	#region Prefab Searching
@@ -117,4 +50,40 @@ public class ShapeManager : MonoBehaviour
 		return shapePrefabs.FirstOrDefault(tempPrefab => tempPrefab.ShapePrefab.name == prefabName);
 	}
 	#endregion
+
+	private void AttemptCreateShape(string shapeName, out ShapeStruct shapeStructure)
+	{
+		shapeStructure = FindPrefab(shapeName);
+		
+		if (_currentShape == shapeStructure.ShapePrefab)
+		{
+			return; // No need to instantiate if it's already the selected shape
+		}
+
+		_currentShape = shapeStructure.ShapePrefab;
+
+		if (_currentShape != null)
+		{
+			Destroy(_savedObject);
+			// _savedObject = Instantiate(_currentShape, shapePosition, true);
+			_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation, shapePosition);
+			
+			OnShapeSelected?.Invoke(shapeStructure);
+		}
+		else
+		{
+			Debug.LogError($"Could not find prefab with name \"{shapeName}\"!");
+		}
+	}
+	
+	private bool IsValidLength()
+	{
+		if (shapePrefabs.Length == 0)
+		{
+			Debug.LogError("No shape prefabs assigned to ShapeManager!");
+			return false;
+		}
+
+		return true;
+	}
 }
