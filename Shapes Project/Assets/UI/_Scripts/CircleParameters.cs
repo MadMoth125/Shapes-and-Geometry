@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using TMPro;
 
-public class CircleParameters : MonoBehaviour
+public class CircleParameters : ParametersBase
 {
 	[HideInInspector] // The circle shape that is being modified.
 	public Circle circleRef;

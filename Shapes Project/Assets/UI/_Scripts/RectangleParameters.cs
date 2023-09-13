@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class RectangleParameters : MonoBehaviour
+public class RectangleParameters : ParametersBase
 {
 	[HideInInspector]
 	public Rectangle rectangleRef;

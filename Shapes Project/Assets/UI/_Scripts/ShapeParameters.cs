@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using TMPro;
 
-public class ShapeParameters : MonoBehaviour
+public class ShapeParameters : ParametersBase
 {
 	[Header("Perimeter Settings")]
 	public string areaText;

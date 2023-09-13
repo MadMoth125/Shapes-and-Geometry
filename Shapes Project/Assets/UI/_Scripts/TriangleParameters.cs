@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using TMPro;
 
-public class TriangleParameters : MonoBehaviour
+public class TriangleParameters : ParametersBase
 {
 	[HideInInspector]
 	public Triangle triangleRef;
