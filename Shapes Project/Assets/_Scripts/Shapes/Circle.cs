@@ -32,9 +32,9 @@ public class Circle : Shape, IDrawable
 		}
 	}
 	
-	public void SetRadius(float radius)
+	public void SetRadius(float newRadius)
 	{
-		this.radius = radius;
+		this.radius = newRadius;
 	}
 	
 	/// <summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using _Scripts;
+using UnityEngine.Serialization;
 
 public class ShapeManager : MonoBehaviour
 {
@@ -12,19 +13,23 @@ public class ShapeManager : MonoBehaviour
 	[SerializeField]
 	private ShapeStruct[] shapePrefabs;
 	
-	[SerializeField]
-	private Transform shapePosition;
-
-	private GameObject _currentShape;
-	private GameObject _savedObject;
-
 	private ShapeStruct _activeShape;
+	
+	[SerializeField]
+	private Transform shapePosition, uiPosition;
+
+	private GameObject _currentShape, _currentUI;
+
+	private GameObject _savedObject, _savedUI;
 	
 	public void OnCircleSelected()
 	{
 		if (!IsValidLength()) return;
 
 		AttemptCreateShape("CustomCircle", out _activeShape);
+		
+		_savedUI.GetComponent<CircleParameters>().circleRef = _savedObject.GetComponent<Circle>();
+		
 	}
 
 	public void OnRectangleSelected()
@@ -32,6 +37,9 @@ public class ShapeManager : MonoBehaviour
 		if (!IsValidLength()) return;
 
 		AttemptCreateShape("CustomRectangle", out _activeShape);
+		
+		// TODO: Set the rectangle's parameters.
+		//_savedUI.GetComponent<CircleParameters>().circleRef = _savedObject.GetComponent<Circle>();
 	}
 	
 	public void OnTriangleSelected()
@@ -40,7 +48,8 @@ public class ShapeManager : MonoBehaviour
 
 		AttemptCreateShape("CustomTriangle", out _activeShape);
 		
-		
+		// TODO: Set the triangle's parameters.
+		// _savedUI.GetComponent<CircleParameters>().circleRef = _savedObject.GetComponent<Circle>();
 	}
 
 	#region Prefab Searching
@@ -66,12 +75,28 @@ public class ShapeManager : MonoBehaviour
 		}
 
 		_currentShape = shapeStructure.ShapePrefab;
-
-		if (_currentShape != null)
+		_currentUI = shapeStructure.UserInterfacePrefab;
+		
+		if (_currentShape)
 		{
+			// Destroy the old shape and UI.
 			Destroy(_savedObject);
-			// _savedObject = Instantiate(_currentShape, shapePosition, true);
-			_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation, shapePosition);
+			Destroy(_savedUI);
+			
+			// Attempt to instantiate the new shape and UI.
+			try
+			{
+				// _savedObject = Instantiate(_currentShape, shapePosition, false);
+				_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation,
+					shapePosition);
+				
+				_savedUI = Instantiate(_currentUI, uiPosition);
+			}
+			catch
+			{
+				// If the instantiation fails, log an error.
+				Debug.LogError($"{this.name} - Could not instantiate shape!");
+			}
 			
 			OnShapeSelected?.Invoke(shapeStructure);
 		}
