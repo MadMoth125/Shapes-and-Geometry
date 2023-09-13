@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using _Scripts;
 
 public class ShapeManager : MonoBehaviour
 {
-	private GameObject _currentShape;
-	private GameObject _savedObject;
-	[SerializeField] private GameObject[] shapePrefabs;
+	public delegate void ShapeSelect(ShapeStruct selectedShape);
+	public event ShapeSelect OnShapeSelect;
+	
+	[SerializeField] private ShapeStruct[] shapePrefabs;
 	[SerializeField] private Transform shapePosition;
 
-	public GameObject UITarget;
+	private GameObject _currentShape;
+	private GameObject _savedObject;
 	
 	public void OnCircleSelected()
 	{
@@ -20,19 +23,21 @@ public class ShapeManager : MonoBehaviour
 			return;
 		}
 
-		GameObject circlePrefab = FindPrefab("CustomCircle");
+		ShapeStruct tempPrefab = FindPrefab("CustomCircle");
 
-		if (_currentShape == circlePrefab)
+		if (_currentShape == tempPrefab.ShapePrefab)
 		{
 			return; // No need to instantiate if it's already the selected shape
 		}
 
-		_currentShape = circlePrefab;
+		_currentShape = tempPrefab.ShapePrefab;
 
 		if (_currentShape != null)
 		{
 			Destroy(_savedObject);
 			_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation);
+			
+			OnShapeSelect?.Invoke(tempPrefab);
 		}
 		else
 		{
@@ -48,19 +53,21 @@ public class ShapeManager : MonoBehaviour
 			return;
 		}
 
-		GameObject rectanglePrefab = FindPrefab("CustomRectangle");
+		ShapeStruct tempPrefab = FindPrefab("CustomRectangle");
 
-		if (_currentShape == rectanglePrefab)
+		if (_currentShape == tempPrefab.ShapePrefab)
 		{
 			return; // No need to instantiate if it's already the selected shape
 		}
 
-		_currentShape = rectanglePrefab;
+		_currentShape = tempPrefab.ShapePrefab;
 
 		if (_currentShape != null)
 		{
 			Destroy(_savedObject);
 			_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation);
+			
+			OnShapeSelect?.Invoke(tempPrefab);
 		}
 		else
 		{
@@ -76,19 +83,21 @@ public class ShapeManager : MonoBehaviour
 			return;
 		}
 
-		GameObject trianglePrefab = FindPrefab("CustomTriangle");
+		ShapeStruct tempPrefab = FindPrefab("CustomTriangle");
 
-		if (_currentShape == trianglePrefab)
+		if (_currentShape == tempPrefab.ShapePrefab)
 		{
 			return; // No need to instantiate if it's already the selected shape
 		}
 
-		_currentShape = trianglePrefab;
+		_currentShape = tempPrefab.ShapePrefab;
 
 		if (_currentShape != null)
 		{
 			Destroy(_savedObject);
 			_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation);
+			
+			OnShapeSelect?.Invoke(tempPrefab);
 		}
 		else
 		{
@@ -97,15 +106,15 @@ public class ShapeManager : MonoBehaviour
 	}
 
 	#region Prefab Searching
-	private bool FindPrefab(string prefabName, out GameObject prefab)
+	private bool FindPrefab(string prefabName, out ShapeStruct prefab)
 	{
-		prefab = shapePrefabs.FirstOrDefault(shapePrefab => shapePrefab.name == prefabName);
-		return prefab != null;
+		prefab = shapePrefabs.FirstOrDefault(tempPrefab => tempPrefab.ShapePrefab.name == prefabName);
+		return prefab.ShapePrefab != null;
 	}
 	
-	private GameObject FindPrefab(string prefabName)
+	private ShapeStruct FindPrefab(string prefabName)
 	{
-		return shapePrefabs.FirstOrDefault(shapePrefab => shapePrefab.name == prefabName);
+		return shapePrefabs.FirstOrDefault(tempPrefab => tempPrefab.ShapePrefab.name == prefabName);
 	}
 	#endregion
 }
