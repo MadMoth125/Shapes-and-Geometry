@@ -9,54 +9,50 @@ public class RectangleParameters : MonoBehaviour
 {
 	[HideInInspector]
 	public Rectangle rectangleRef;
-
-	[SerializeField]
-	private TextMeshProUGUI textWidthRef;
+	
 	[SerializeField]
 	private SliderElement sliderWidthRef;
-
 	[SerializeField]
 	private SliderElement sliderHeightRef;
 	
 	private ShapeParameters _shapeParametersRef;
 	
+	// subscribe to the slider's OnSliderValueChanged event.
 	private void OnEnable()
 	{
 		// Get the shape parameters UI reference.
 		_shapeParametersRef = GetComponentInChildren<ShapeParameters>();
-		
-		if (!sliderWidthRef)
-		{
-			Debug.LogError($"{this.name} - Width slider not found!");
-		}
-		else
+
+		try
 		{
 			sliderWidthRef.OnSliderValueChanged += OnSliderWidthUpdated;
-		}
-
-		if (!sliderHeightRef)
-		{
-			Debug.LogError($"{this.name} - Height slider not found!");
-		}
-		else
-		{
 			sliderHeightRef.OnSliderValueChanged += OnSliderHeightUpdated;
+		}
+		catch
+		{
+			Debug.LogError($"{this.name} - Width OR Height slider not found!");
 		}
 	}
 
+	// unsubscribe from the slider's OnSliderValueChanged event.
 	private void OnDestroy()
 	{
-		if (!sliderWidthRef || !sliderWidthRef) return;
-		
-		sliderWidthRef.OnSliderValueChanged -= OnSliderWidthUpdated;
-		sliderHeightRef.OnSliderValueChanged -= OnSliderHeightUpdated;
+		try
+		{
+			sliderWidthRef.OnSliderValueChanged -= OnSliderWidthUpdated;
+			sliderHeightRef.OnSliderValueChanged -= OnSliderHeightUpdated;
+		}
+		catch
+		{
+			// ignored
+		}
 	}
 
 	private void OnSliderWidthUpdated(float newWidth)
 	{
 		if (!rectangleRef || !_shapeParametersRef) return; // if the rectangle reference or shape script is null, return.
 		
-		// Update the circle's radius.
+		// Update the rectangle's width.
 		rectangleRef.SetWidth(newWidth);
 		
 		// Update the general shape parameters text.
@@ -68,7 +64,7 @@ public class RectangleParameters : MonoBehaviour
 	{
 		if (!rectangleRef || !_shapeParametersRef) return; // if the rectangle reference or shape script is null, return.
 		
-		// Update the circle's radius.
+		// Update the rectangle's height.
 		rectangleRef.SetHeight(newHeight);
 		
 		// Update the general shape parameters text.

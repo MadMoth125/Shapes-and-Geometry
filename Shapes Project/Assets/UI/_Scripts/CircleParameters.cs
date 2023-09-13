@@ -6,9 +6,10 @@ public class CircleParameters : MonoBehaviour
 {
 	[HideInInspector] // The circle shape that is being modified.
 	public Circle circleRef;
+	[SerializeField]
 	private SliderElement _radiusSliderRef;
 	
-	[SerializeField]
+	[SerializeField] // the text element that displays the circle's Diameter.
 	private TextMeshProUGUI textDiameterRef;
 	public string diameterText;
 	
@@ -17,38 +18,40 @@ public class CircleParameters : MonoBehaviour
 	// subscribe to the slider's OnSliderValueChanged event.
 	private void OnEnable()
 	{
-		// Get the slider reference.
-		_radiusSliderRef = GetComponentInChildren<SliderElement>();
 		// Get the shape parameters UI reference.
 		_shapeParametersRef = GetComponentInChildren<ShapeParameters>();
-		
-		if (!_radiusSliderRef)
-		{
-			Debug.LogError($"{this.name} - Slider not found!");
-		}
-		else
+
+		try
 		{
 			_radiusSliderRef.OnSliderValueChanged += OnRadiusUpdated;
+		}
+		catch
+		{
+			Debug.LogError($"{this.name} - Slider not found!");
 		}
 	}
 
 	// unsubscribe from the slider's OnSliderValueChanged event.
 	private void OnDestroy()
 	{
-		if (!_radiusSliderRef) return;
-		
-		_radiusSliderRef.OnSliderValueChanged -= OnRadiusUpdated;
+		try
+		{
+			_radiusSliderRef.OnSliderValueChanged -= OnRadiusUpdated;
+		}
+		catch
+		{
+			// ignored
+		}
 	}
 
-	// Start is called before the first frame update
-	void Start()
+	private void Start()
 	{
-		if (!circleRef) return; // if the circle reference is null, return.
-		
-		// Radius text is already set on the "VariableSlider" prefab.
+		/* Initialize the text on Start() instead of OnEnable()
+		 * because the value isn't ready until this point in execution
+		 */
 		SetDiameterText(circleRef.GetDiameter());
 	}
-	
+
 	private void OnRadiusUpdated(float newRadius)
 	{
 		if (!circleRef || !_shapeParametersRef) return; // if the circle reference or shape script is null, return.

@@ -80,7 +80,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectangleRef: {fileID: 0}
-  textWidthRef: {fileID: 0}
   sliderWidthRef: {fileID: 6964766689462955820}
   sliderHeightRef: {fileID: 2075479403421425776}
 --- !u!1001 &3367295112523406218

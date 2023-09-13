@@ -29,7 +29,6 @@ public class ShapeManager : MonoBehaviour
 		AttemptCreateShape("CustomCircle", out _activeShape);
 		
 		_savedUI.GetComponent<CircleParameters>().circleRef = _savedObject.GetComponent<Circle>();
-		
 	}
 
 	public void OnRectangleSelected()
@@ -39,9 +38,6 @@ public class ShapeManager : MonoBehaviour
 		AttemptCreateShape("CustomRectangle", out _activeShape);
 		
 		_savedUI.GetComponent<RectangleParameters>().rectangleRef = _savedObject.GetComponent<Rectangle>();
-		
-		// TODO: Set the rectangle's parameters.
-		//_savedUI.GetComponent<CircleParameters>().circleRef = _savedObject.GetComponent<Circle>();
 	}
 	
 	public void OnTriangleSelected()
@@ -49,6 +45,8 @@ public class ShapeManager : MonoBehaviour
 		if (!IsValidLength()) return;
 
 		AttemptCreateShape("CustomTriangle", out _activeShape);
+		
+		_savedUI.GetComponent<TriangleParameters>().triangleRef = _savedObject.GetComponent<Triangle>();
 		
 		// TODO: Set the triangle's parameters.
 		// _savedUI.GetComponent<CircleParameters>().circleRef = _savedObject.GetComponent<Circle>();

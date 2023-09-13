@@ -13,16 +13,16 @@ using UnityEngine;
 [Tooltip("This class uses MeshGeneration to render a triangle instead of a SpriteRenderer.")]
 public class Triangle : Shape, IDrawable
 {
-	public Triangle(float legX, float legY)
+	public Triangle(float width, float height)
 	{
-		legWidth = legX;
-		legHeight = legY;
+		legWidth = width;
+		legHeight = height;
 	}
 	
-	public Triangle(float legX, float legY, bool shouldAutoOffset)
+	public Triangle(float width, float height, bool shouldAutoOffset)
 	{
-		legWidth = legX;
-		legHeight = legY;
+		legWidth = width;
+		legHeight = height;
 		autoOffset = shouldAutoOffset;
 	}
 	
@@ -50,6 +50,16 @@ public class Triangle : Shape, IDrawable
 	private void Update()
 	{
 		GenerateTriangle();
+	}
+	
+	public void SetWidth(float newWidth)
+	{
+		this.legWidth = newWidth;
+	}
+	
+	public void SetHeight(float newHeight)
+	{
+		this.legHeight = newHeight;
 	}
 	
 	public override float GetShapeArea()
