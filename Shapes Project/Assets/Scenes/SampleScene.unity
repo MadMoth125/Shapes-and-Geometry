@@ -1673,7 +1673,7 @@ GameObject:
   - component: {fileID: 1300793796}
   - component: {fileID: 1300793797}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Circle Parameters
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1971,7 +1971,7 @@ GameObject:
   - component: {fileID: 1705589033}
   - component: {fileID: 1705589034}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Circle Param (Radius)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
