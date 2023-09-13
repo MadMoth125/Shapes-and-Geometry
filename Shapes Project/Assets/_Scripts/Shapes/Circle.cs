@@ -32,6 +32,11 @@ public class Circle : Shape, IDrawable
 		}
 	}
 	
+	public void SetRadius(float radius)
+	{
+		this.radius = radius;
+	}
+	
 	/// <summary>
 	/// Get the diameter of the circle.
 	/// </summary>
