@@ -4,21 +4,24 @@ using TMPro;
 
 public class CircleParameters : MonoBehaviour
 {
-	public string diameterText;
 	[HideInInspector] // The circle shape that is being modified.
 	public Circle circleRef;
+	private SliderElement _radiusSliderRef;
 	
 	[SerializeField]
 	private TextMeshProUGUI textDiameterRef;
+	public string diameterText;
 	
-	private SliderElement _radiusSliderRef;
 	private ShapeParameters _shapeParametersRef;
 	
 	// subscribe to the slider's OnSliderValueChanged event.
 	private void OnEnable()
 	{
+		// Get the slider reference.
 		_radiusSliderRef = GetComponentInChildren<SliderElement>();
+		// Get the shape parameters UI reference.
 		_shapeParametersRef = GetComponentInChildren<ShapeParameters>();
+		
 		if (!_radiusSliderRef)
 		{
 			Debug.LogError($"{this.name} - Slider not found!");

@@ -39,6 +39,16 @@ public class Rectangle : Shape, IDrawable
         }
     }
 
+    public void SetWidth(float newWidth)
+    {
+        this.width = newWidth;
+    }
+    
+    public void SetHeight(float newHeight)
+    {
+        this.height = newHeight;
+    }
+    
     public override float GetShapeArea()
     {
         return height * width;

@@ -38,6 +38,8 @@ public class ShapeManager : MonoBehaviour
 
 		AttemptCreateShape("CustomRectangle", out _activeShape);
 		
+		_savedUI.GetComponent<RectangleParameters>().rectangleRef = _savedObject.GetComponent<Rectangle>();
+		
 		// TODO: Set the rectangle's parameters.
 		//_savedUI.GetComponent<CircleParameters>().circleRef = _savedObject.GetComponent<Circle>();
 	}
@@ -87,15 +89,22 @@ public class ShapeManager : MonoBehaviour
 			try
 			{
 				// _savedObject = Instantiate(_currentShape, shapePosition, false);
-				_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation,
-					shapePosition);
-				
-				_savedUI = Instantiate(_currentUI, uiPosition);
+				_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation, shapePosition);
 			}
 			catch
 			{
 				// If the instantiation fails, log an error.
 				Debug.LogError($"{this.name} - Could not instantiate shape!");
+			}
+
+			try
+			{
+				_savedUI = Instantiate(_currentUI, uiPosition);
+			}
+			catch
+			{
+				// If the instantiation fails, log an error.
+				Debug.LogError($"{this.name} - Could not instantiate shape UI!");
 			}
 			
 			OnShapeSelected?.Invoke(shapeStructure);
