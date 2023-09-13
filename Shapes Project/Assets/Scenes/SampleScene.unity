@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Set Radius: 0.5'
+  m_text: 'Circle Radius: 0.5'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1432,7 +1432,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1081306676}
-  - component: {fileID: 1081306677}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -1455,19 +1454,6 @@ Transform:
   m_Father: {fileID: 1960876534}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1081306677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081306675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28436934b5883b64d8707c8e35043406, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shapeManager: {fileID: 1200333876}
 --- !u!1 &1093710209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,6 +1615,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapePrefabs:
   - ShapePrefab: {fileID: 2738761142623730501, guid: 00eea680b2ccfa84ab2643563672d033, type: 3}
+    UserInterfacePrefab: {fileID: 0}
+  - ShapePrefab: {fileID: 6194914754444729270, guid: 064c25d784ff8204381b7da700b86216, type: 3}
+    UserInterfacePrefab: {fileID: 0}
+  - ShapePrefab: {fileID: 5456553421990745861, guid: 41620439afa918c4e880f6ae2ac13ae1, type: 3}
     UserInterfacePrefab: {fileID: 0}
   shapePosition: {fileID: 948474049}
 --- !u!1 &1285336123
@@ -1829,8 +1819,8 @@ RectTransform:
   m_GameObject: {fileID: 1417282657}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 215723305}
   - {fileID: 1093710210}
@@ -1841,7 +1831,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 240, y: 20}
+  m_SizeDelta: {x: 140, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1417282659
 MonoBehaviour:
@@ -1893,7 +1883,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1705589035}
+        m_TargetAssemblyTypeName: SetRadiusElement, Assembly-CSharp
+        m_MethodName: OnSliderUpdated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1705587366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1970,6 +1972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1705589033}
   - component: {fileID: 1705589034}
+  - component: {fileID: 1705589035}
   m_Layer: 5
   m_Name: Circle Param (Radius)
   m_TagString: Untagged
@@ -2025,6 +2028,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1705589035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705589032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2613100bc4c695549acee2699c3d820c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliderText: 'Circle Radius:'
 --- !u!1 &1716214022
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,26 +14,28 @@ public class ShapeManager : MonoBehaviour
 
 	private GameObject _currentShape;
 	private GameObject _savedObject;
+
+	private ShapeStruct _activeShape;
 	
 	public void OnCircleSelected()
 	{
 		if (!IsValidLength()) return;
 
-		AttemptCreateShape("CustomCircle", out ShapeStruct tempPrefab);
+		AttemptCreateShape("CustomCircle", out _activeShape);
 	}
 
 	public void OnRectangleSelected()
 	{
 		if (!IsValidLength()) return;
 
-		AttemptCreateShape("CustomRectangle", out ShapeStruct tempPrefab);
+		AttemptCreateShape("CustomRectangle", out _activeShape);
 	}
 	
 	public void OnTriangleSelected()
 	{
 		if (!IsValidLength()) return;
 
-		AttemptCreateShape("CustomTriangle", out ShapeStruct tempPrefab);
+		AttemptCreateShape("CustomTriangle", out _activeShape);
 		
 		
 	}
