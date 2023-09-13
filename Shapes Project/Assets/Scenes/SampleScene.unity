@@ -1159,7 +1159,7 @@ MonoBehaviour:
   - ShapePrefab: {fileID: 6194914754444729270, guid: 064c25d784ff8204381b7da700b86216, type: 3}
     UserInterfacePrefab: {fileID: 1682388333748108639, guid: e2159983bf90af74583f717cb04a8855, type: 3}
   - ShapePrefab: {fileID: 5456553421990745861, guid: 41620439afa918c4e880f6ae2ac13ae1, type: 3}
-    UserInterfacePrefab: {fileID: 0}
+    UserInterfacePrefab: {fileID: 1682388333748108639, guid: 8b52c6cef2e3ce04984f26b62cd9b82a, type: 3}
   shapePosition: {fileID: 948474049}
   uiPosition: {fileID: 1158887276}
 --- !u!1 &1285336123
