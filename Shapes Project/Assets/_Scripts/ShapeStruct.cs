@@ -1,18 +1,19 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace _Scripts
+namespace Shapes
 {
     [Serializable]
     public struct ShapeStruct
     {
-        public GameObject ShapePrefab;
-        public GameObject UserInterfacePrefab;
+        public Shape prefab;
+        public ParametersBase ui;
         
-        public ShapeStruct(GameObject shapePrefab, GameObject userInterfacePrefab)
+        public ShapeStruct(Shape prefab, ParametersBase ui)
         {
-            ShapePrefab = shapePrefab;
-            UserInterfacePrefab = userInterfacePrefab;
+            this.prefab = prefab;
+            this.ui = ui;
         }
     }
 }

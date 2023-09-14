@@ -1,20 +1,21 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using Shapes;
 using UnityEngine;
-using UnityEngine.Serialization;
+using TMPro;
 
 public class RectangleParameters : ParametersBase
 {
+	// The shape that is being modified.
 	[HideInInspector]
 	public Rectangle rectangleRef;
 	
+	// UI elements that reference the rectangle's width/height.
 	[SerializeField]
 	private SliderElement sliderWidthRef;
 	[SerializeField]
 	private SliderElement sliderHeightRef;
 	
+	// UI elements that reference general shape parameters.
 	private ShapeParameters _shapeParametersRef;
 	
 	// subscribe to the slider's OnSliderValueChanged event.
@@ -28,10 +29,7 @@ public class RectangleParameters : ParametersBase
 			sliderWidthRef.OnSliderValueChanged += OnSliderWidthUpdated;
 			sliderHeightRef.OnSliderValueChanged += OnSliderHeightUpdated;
 		}
-		catch
-		{
-			Debug.LogError($"{this.name} - Width OR Height slider not found!");
-		}
+		catch { Debug.LogError($"{this.name} - Width OR Height slider not found!"); }
 	}
 
 	// unsubscribe from the slider's OnSliderValueChanged event.
@@ -42,10 +40,14 @@ public class RectangleParameters : ParametersBase
 			sliderWidthRef.OnSliderValueChanged -= OnSliderWidthUpdated;
 			sliderHeightRef.OnSliderValueChanged -= OnSliderHeightUpdated;
 		}
-		catch
-		{
-			// ignored
-		}
+		catch { /* ignored */ }
+	}
+
+	private void Start()
+	{
+		// Cast the general shape reference to a rectangle reference.
+		rectangleRef = shapeRef as Rectangle;
+		
 	}
 
 	private void OnSliderWidthUpdated(float newWidth)

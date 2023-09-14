@@ -1,18 +1,25 @@
 using System;
+using Shapes;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class CircleParameters : ParametersBase
 {
-	[HideInInspector] // The circle shape that is being modified.
+	// The shape that is being modified.
+	[HideInInspector]
 	public Circle circleRef;
-	[SerializeField]
-	private SliderElement _radiusSliderRef;
 	
-	[SerializeField] // the text element that displays the circle's Diameter.
+	// UI elements that reference the circle's radius.
+	[FormerlySerializedAs("_radiusSliderRef")] [SerializeField]
+	private SliderElement radiusSliderRef;
+	
+	// UI elements that reference the circle's diameter.
+	[SerializeField]
 	private TextMeshProUGUI textDiameterRef;
 	public string diameterText;
 	
+	// UI elements that reference general shape parameters.
 	private ShapeParameters _shapeParametersRef;
 	
 	// subscribe to the slider's OnSliderValueChanged event.
@@ -23,12 +30,9 @@ public class CircleParameters : ParametersBase
 
 		try
 		{
-			_radiusSliderRef.OnSliderValueChanged += OnRadiusUpdated;
+			radiusSliderRef.OnSliderValueChanged += OnRadiusUpdated;
 		}
-		catch
-		{
-			Debug.LogError($"{this.name} - Slider not found!");
-		}
+		catch { Debug.LogError($"{this.name} - Slider not found!"); }
 	}
 
 	// unsubscribe from the slider's OnSliderValueChanged event.
@@ -36,20 +40,23 @@ public class CircleParameters : ParametersBase
 	{
 		try
 		{
-			_radiusSliderRef.OnSliderValueChanged -= OnRadiusUpdated;
+			radiusSliderRef.OnSliderValueChanged -= OnRadiusUpdated;
 		}
-		catch
-		{
-			// ignored
-		}
+		catch { /* ignored */ }
 	}
 
 	private void Start()
 	{
-		/* Initialize the text on Start() instead of OnEnable()
-		 * because the value isn't ready until this point in execution
-		 */
-		SetDiameterText(circleRef.GetDiameter());
+		// Cast the general shape reference to a circle reference.
+		circleRef = shapeRef as Circle;
+		
+		if (circleRef)
+		{
+			/* Initialize the text on Start() instead of OnEnable()
+			 * because the value isn't ready until this point in execution
+			 */
+			SetDiameterText(circleRef.GetDiameter());
+		}
 	}
 
 	private void OnRadiusUpdated(float newRadius)

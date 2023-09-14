@@ -1,21 +1,26 @@
 using System;
+using Shapes;
 using UnityEngine;
 using TMPro;
 
 public class TriangleParameters : ParametersBase
 {
+	// The shape that is being modified.
 	[HideInInspector]
 	public Triangle triangleRef;
 	
-	[SerializeField] // Text element that displays the triangle's Hypotenuse
-	private TextMeshProUGUI textHypotenuseRef;
-	public string hypotenuseText;
-	
+	// UI elements that reference the triangle's width/height.
 	[SerializeField]
 	private SliderElement sliderWidthRef;
 	[SerializeField]
 	private SliderElement sliderHeightRef;
 	
+	// UI elements that reference the triangle's hypotenuse.
+	[SerializeField]
+	private TextMeshProUGUI textHypotenuseRef;
+	public string hypotenuseText;
+	
+	// UI elements that reference general shape parameters.
 	private ShapeParameters _shapeParametersRef;
 
 	// subscribe to the slider's OnSliderValueChanged event.
@@ -29,10 +34,7 @@ public class TriangleParameters : ParametersBase
 			sliderWidthRef.OnSliderValueChanged += OnSliderWidthUpdated;
 			sliderHeightRef.OnSliderValueChanged += OnSliderHeightUpdated;
 		}
-		catch
-		{
-			Debug.LogError($"{this.name} - Width OR Height slider not found!");
-		}
+		catch { Debug.LogError($"{this.name} - Width OR Height slider not found!"); }
 	}
 
 	// unsubscribe from the slider's OnSliderValueChanged event.
@@ -43,18 +45,21 @@ public class TriangleParameters : ParametersBase
 			sliderWidthRef.OnSliderValueChanged -= OnSliderWidthUpdated;
 			sliderHeightRef.OnSliderValueChanged -= OnSliderHeightUpdated;
 		}
-		catch
-		{
-			// ignored
-		}
+		catch { /* ignored */ }
 	}
 
 	private void Start()
 	{
-		/* Initialize the text on Start() instead of OnEnable()
-		 * because the value isn't ready until this point in execution
-		 */
-		SetHypotenuseText(triangleRef.GetHypotenuse());
+		// Cast the general shape reference to a triangle reference.
+		triangleRef = shapeRef as Triangle;
+
+		if (triangleRef)
+		{
+			/* Initialize the text on Start() instead of OnEnable()
+			 * because the value isn't ready until this point in execution
+			 */
+			SetHypotenuseText(triangleRef.GetHypotenuse());
+		}
 	}
 
 	private void OnSliderWidthUpdated(float newWidth)

@@ -2,92 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using _Scripts;
+using Shapes;
 using UnityEngine.Serialization;
 
 public class ShapeManager : MonoBehaviour
 {
+	// event
 	public delegate void ShapeSelect(ShapeStruct selectedShape);
 	public event ShapeSelect OnShapeSelected;
+
+	private Dictionary<int, string> testDict;
+	
 	
 	[SerializeField]
 	private ShapeStruct[] shapePrefabs;
+	private ShapeStruct _current;
+	private ShapeStruct _selected;
 	
-	private ShapeStruct _activeShape;
-	
-	[SerializeField]
-	private Transform shapePosition, uiPosition;
-
-	private GameObject _currentShape, _currentUI;
-
-	private GameObject _savedObject, _savedUI;
+	[FormerlySerializedAs("shapePosition")] [SerializeField]
+	private Transform shapeTransform;
+	[FormerlySerializedAs("uiPosition")] [SerializeField]
+	private Transform uiTransform;
 	
 	public void OnCircleSelected()
 	{
 		if (!IsValidLength()) return;
 
-		AttemptCreateShape("CustomCircle", out _activeShape);
-		
-		_savedUI.GetComponent<CircleParameters>().circleRef = _savedObject.GetComponent<Circle>();
-	}
+		_selected = FindPrefab<Circle>();
 
-	public void OnRectangleSelected()
-	{
-		if (!IsValidLength()) return;
-
-		AttemptCreateShape("CustomRectangle", out _activeShape);
+		// No need to instantiate if it's already the selected shape
+		if (_selected.prefab is Circle && _current.prefab is Circle) return;
 		
-		_savedUI.GetComponent<RectangleParameters>().rectangleRef = _savedObject.GetComponent<Rectangle>();
-	}
-	
-	public void OnTriangleSelected()
-	{
-		if (!IsValidLength()) return;
-
-		AttemptCreateShape("CustomTriangle", out _activeShape);
+		StartCoroutine(CreateShapeCoroutine());
+		//CreateShape();
 		
-		_savedUI.GetComponent<TriangleParameters>().triangleRef = _savedObject.GetComponent<Triangle>();
-		
-		// TODO: Set the triangle's parameters.
-		// _savedUI.GetComponent<CircleParameters>().circleRef = _savedObject.GetComponent<Circle>();
-	}
-
-	#region Prefab Searching
-	private bool FindPrefab(string prefabName, out ShapeStruct prefab)
-	{
-		prefab = shapePrefabs.FirstOrDefault(tempPrefab => tempPrefab.ShapePrefab.name == prefabName);
-		return prefab.ShapePrefab != null;
-	}
-	
-	private ShapeStruct FindPrefab(string prefabName)
-	{
-		return shapePrefabs.FirstOrDefault(tempPrefab => tempPrefab.ShapePrefab.name == prefabName);
-	}
-	#endregion
-
-	private void AttemptCreateShape(string shapeName, out ShapeStruct shapeStructure)
-	{
-		shapeStructure = FindPrefab(shapeName);
-		
-		if (_currentShape == shapeStructure.ShapePrefab)
-		{
-			return; // No need to instantiate if it's already the selected shape
-		}
-
-		_currentShape = shapeStructure.ShapePrefab;
-		_currentUI = shapeStructure.UserInterfacePrefab;
-		
-		if (_currentShape)
+		// legacy code
+		/*
+		if (_current.prefab)
 		{
 			// Destroy the old shape and UI.
-			Destroy(_savedObject);
-			Destroy(_savedUI);
+			Destroy(_current.prefab);
+			Destroy(_current.ui);
 			
 			// Attempt to instantiate the new shape and UI.
 			try
 			{
 				// _savedObject = Instantiate(_currentShape, shapePosition, false);
-				_savedObject = Instantiate(_currentShape, shapePosition.position, shapePosition.rotation, shapePosition);
+				_current.prefab = Instantiate(_selected.prefab, shapeTransform.position, shapeTransform.rotation, shapeTransform);
 			}
 			catch
 			{
@@ -97,7 +58,198 @@ public class ShapeManager : MonoBehaviour
 
 			try
 			{
-				_savedUI = Instantiate(_currentUI, uiPosition);
+				_current.ui = Instantiate(_selected.ui, uiTransform);
+			}
+			catch
+			{
+				// If the instantiation fails, log an error.
+				Debug.LogError($"{this.name} - Could not instantiate shape UI!");
+			}
+			
+			OnShapeSelected?.Invoke(_current);
+		}
+		else
+		{
+			// Debug.LogError($"Could not find prefab with name \"{shapeName}\"!");
+		}
+		 */
+		
+		/*
+		 * 
+		AttemptCreateShape("CustomCircle", out _current);
+		
+		_savedUI.GetComponent<CircleParameters>().circleRef = _savedShape.GetComponent<Circle>();
+		 */
+	}
+
+	public void OnRectangleSelected()
+	{
+		if (!IsValidLength()) return;
+
+		_selected = FindPrefab<Rectangle>();
+
+		// No need to instantiate if it's already the selected shape
+		if (_selected.prefab is Rectangle && _current.prefab is Rectangle) return;
+		
+		StartCoroutine(CreateShapeCoroutine());
+	}
+	
+	public void OnTriangleSelected()
+	{
+		if (!IsValidLength()) return;
+
+		_selected = FindPrefab<Triangle>();
+
+		// No need to instantiate if it's already the selected shape
+		if (_selected.prefab is Triangle && _current.prefab is Triangle) return;
+		
+		StartCoroutine(CreateShapeCoroutine());
+	}
+
+	#region Shape Instantiation
+	/// <summary>
+	/// Creates the shape/UI element based on _currentShape. Handles removing the old shape and UI element when necessary.
+	/// </summary>
+	private void CreateShape()
+	{
+		// Destroy the old shape and UI if they are still present.
+		if (_current.prefab)
+		{
+			Destroy(_current.prefab.gameObject);
+			Destroy(_current.ui.gameObject);
+		}
+
+		// Attempt to instantiate the new shape and UI.
+		try
+		{
+			_current.prefab = Instantiate(_selected.prefab, shapeTransform.position, shapeTransform.rotation, shapeTransform);
+			
+			// alternate way to instantiate, prone to breaking
+			// _savedObject = Instantiate(_currentShape, shapePosition, false);
+		}
+		catch { Debug.LogError($"{this.name} - Could not instantiate shape!"); }
+
+		try
+		{
+			_current.ui = Instantiate(_selected.ui, uiTransform);
+			_current.ui.shapeRef = _current.prefab;
+		}
+		catch { Debug.LogError($"{this.name} - Could not instantiate shape UI!"); }
+			
+		OnShapeSelected?.Invoke(_current);
+	}
+	
+	/// <summary>
+	/// Coroutine version of <see cref="CreateShape"/>
+	/// </summary>
+	/// <returns></returns>
+	private IEnumerator CreateShapeCoroutine()
+	{
+		// Destroy the old shape and UI if they are still present.
+		if (_current.prefab)
+		{
+			Destroy(_current.prefab.gameObject);
+			Destroy(_current.ui.gameObject);
+			yield return new WaitForEndOfFrame();
+		}
+
+		// Attempt to instantiate the new shape and UI.
+		try
+		{
+			_current.prefab = Instantiate(_selected.prefab, shapeTransform.position, shapeTransform.rotation, shapeTransform);
+			
+			// alternate way to instantiate, prone to breaking
+			// _savedObject = Instantiate(_currentShape, shapePosition, false);
+		}
+		catch { Debug.LogError($"{this.name} - Could not instantiate shape!"); }
+		
+		yield return new WaitForEndOfFrame();
+		
+		try
+		{
+			_current.ui = Instantiate(_selected.ui, uiTransform);
+			_current.ui.shapeRef = _current.prefab;
+		}
+		catch { Debug.LogError($"{this.name} - Could not instantiate shape UI!"); }
+			
+		OnShapeSelected?.Invoke(_current);
+	}
+	#endregion
+	
+	#region Helpers
+	/// <summary>
+	/// Searches <see cref="shapePrefabs"/> for a prefab with the type <typeparamref name="T"/>.
+	/// </summary>
+	/// <typeparam name="T">Specified class that derives from <see cref="Shape"/></typeparam>
+	/// <returns>The corresponding shape struct if the prefab is found.</returns>
+	private ShapeStruct FindPrefab<T>() where T : Shape
+	{
+		foreach (var shape in shapePrefabs)
+		{
+			if (shape.prefab is T component)
+			{
+				return shape;
+			}
+		}
+		
+		return new ShapeStruct(); // Return null if the component is not found.
+	}
+	
+	/// <summary>
+	/// Checks if the length of <see cref="shapePrefabs"/> is greater than 0.
+	/// </summary>
+	/// <returns></returns>
+	private bool IsValidLength()
+	{
+		if (shapePrefabs.Length == 0)
+		{
+			Debug.LogError("No shape prefabs assigned to ShapeManager!");
+			return false;
+		}
+
+		return true;
+	}
+	
+	private ShapeStruct FindPrefab(string prefabName)
+	{
+		return shapePrefabs.FirstOrDefault(tempPrefab => tempPrefab.prefab.name == prefabName);
+	}
+	#endregion
+
+	private void AttemptCreateShape(string shapeName, out ShapeStruct shapeStructure)
+	{
+		shapeStructure = FindPrefab(shapeName);
+		/*
+		 * 
+		if (_currentShape == shapeStructure.prefab)
+		{
+			return; // No need to instantiate if it's already the selected shape
+		}
+
+		_currentShape = shapeStructure.prefab;
+		_currentUI = shapeStructure.ui;
+		
+		if (_currentShape)
+		{
+			// Destroy the old shape and UI.
+			Destroy(_savedShape);
+			Destroy(_savedUI);
+			
+			// Attempt to instantiate the new shape and UI.
+			try
+			{
+				// _savedObject = Instantiate(_currentShape, shapePosition, false);
+				_savedShape = Instantiate(_currentShape, shapeTransform.position, shapeTransform.rotation, shapeTransform);
+			}
+			catch
+			{
+				// If the instantiation fails, log an error.
+				Debug.LogError($"{this.name} - Could not instantiate shape!");
+			}
+
+			try
+			{
+				_savedUI = Instantiate(_currentUI, uiTransform);
 			}
 			catch
 			{
@@ -111,16 +263,8 @@ public class ShapeManager : MonoBehaviour
 		{
 			Debug.LogError($"Could not find prefab with name \"{shapeName}\"!");
 		}
+		 */
 	}
 	
-	private bool IsValidLength()
-	{
-		if (shapePrefabs.Length == 0)
-		{
-			Debug.LogError("No shape prefabs assigned to ShapeManager!");
-			return false;
-		}
-
-		return true;
-	}
+	
 }
