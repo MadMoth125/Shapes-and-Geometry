@@ -64,32 +64,36 @@ public class TriangleParameters : ParametersBase
 
 	private void OnSliderWidthUpdated(float newWidth)
 	{
-		if (!triangleRef || !_shapeParametersRef) return; // if the rectangle reference or shape script is null, return.
-		
-		// Update the rectangle's width.
-		triangleRef.SetWidth(newWidth);
-		
-		// Update the hypotenuse text.
-		SetHypotenuseText(triangleRef.GetHypotenuse());
-		
-		// Update the general shape parameters text.
-		_shapeParametersRef.SetAreaText(triangleRef.GetShapeArea());
-		_shapeParametersRef.SetPerimeterText(triangleRef.GetShapePerimeter());
+		try
+		{
+			// Update the rectangle's width.
+			triangleRef.SetWidth(newWidth);
+
+			// Update the hypotenuse text.
+			SetHypotenuseText(triangleRef.GetHypotenuse());
+
+			// Update the general shape parameters text.
+			_shapeParametersRef.SetAreaText(triangleRef.GetShapeArea());
+			_shapeParametersRef.SetPerimeterText(triangleRef.GetShapePerimeter());
+		}
+		catch { /* ignored */ }
 	}
-	
+
 	private void OnSliderHeightUpdated(float newHeight)
 	{
-		if (!triangleRef || !_shapeParametersRef) return; // if the rectangle reference or shape script is null, return.
+		try
+		{
+			// Update the rectangle's height.
+			triangleRef.SetHeight(newHeight);
 		
-		// Update the rectangle's height.
-		triangleRef.SetHeight(newHeight);
+			// Update the hypotenuse text.
+			SetHypotenuseText(triangleRef.GetHypotenuse());
 		
-		// Update the hypotenuse text.
-		SetHypotenuseText(triangleRef.GetHypotenuse());
-		
-		// Update the general shape parameters text.
-		_shapeParametersRef.SetAreaText(triangleRef.GetShapeArea());
-		_shapeParametersRef.SetPerimeterText(triangleRef.GetShapePerimeter());
+			// Update the general shape parameters text.
+			_shapeParametersRef.SetAreaText(triangleRef.GetShapeArea());
+			_shapeParametersRef.SetPerimeterText(triangleRef.GetShapePerimeter());
+		}
+		catch { /* ignored */ }
 	}
 
 	public void SetHypotenuseText(float value)

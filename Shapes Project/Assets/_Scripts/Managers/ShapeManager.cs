@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Shapes;
-using UnityEngine.Serialization;
 
 public class ShapeManager : MonoBehaviour
 {
@@ -15,9 +12,9 @@ public class ShapeManager : MonoBehaviour
 	private ShapeStruct _current;
 	private ShapeStruct _selected;
 	
-	[FormerlySerializedAs("shapePosition")] [SerializeField]
+	[SerializeField]
 	private Transform shapeTransform;
-	[FormerlySerializedAs("uiPosition")] [SerializeField]
+	[SerializeField]
 	private Transform uiTransform;
 	
 	public void OnCircleSelected()
@@ -30,8 +27,6 @@ public class ShapeManager : MonoBehaviour
 		if (_selected.prefab is Circle && _current.prefab is Circle) return;
 		
 		StartCoroutine(CreateShapeCoroutine());
-		// vvv alternative function
-		// CreateShape();
 	}
 
 	public void OnRectangleSelected()
@@ -143,7 +138,7 @@ public class ShapeManager : MonoBehaviour
 				return shape;
 			}
 		}
-		
+
 		return new ShapeStruct(); // Return null if the component is not found.
 	}
 	
@@ -162,5 +157,4 @@ public class ShapeManager : MonoBehaviour
 		return true;
 	}
 	#endregion
-	
 }

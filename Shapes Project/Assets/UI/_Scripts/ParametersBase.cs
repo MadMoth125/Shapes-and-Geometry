@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ParametersBase : MonoBehaviour
 {
-    public Shape shapeRef;
+	public Shape shapeRef;
 
-    // Base class for all parameters scripts.
+	// Base class for all parameters scripts.
 }

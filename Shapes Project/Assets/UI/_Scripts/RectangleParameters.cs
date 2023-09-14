@@ -47,30 +47,33 @@ public class RectangleParameters : ParametersBase
 	{
 		// Cast the general shape reference to a rectangle reference.
 		rectangleRef = shapeRef as Rectangle;
-		
 	}
 
 	private void OnSliderWidthUpdated(float newWidth)
 	{
-		if (!rectangleRef || !_shapeParametersRef) return; // if the rectangle reference or shape script is null, return.
+		try
+		{
+			// Update the rectangle's width.
+			rectangleRef.SetWidth(newWidth);
 		
-		// Update the rectangle's width.
-		rectangleRef.SetWidth(newWidth);
-		
-		// Update the general shape parameters text.
-		_shapeParametersRef.SetAreaText(rectangleRef.GetShapeArea());
-		_shapeParametersRef.SetPerimeterText(rectangleRef.GetShapePerimeter());
+			// Update the general shape parameters text.
+			_shapeParametersRef.SetAreaText(rectangleRef.GetShapeArea());
+			_shapeParametersRef.SetPerimeterText(rectangleRef.GetShapePerimeter());
+		}
+		catch { /* ignored */ }
 	}
-	
+
 	private void OnSliderHeightUpdated(float newHeight)
 	{
-		if (!rectangleRef || !_shapeParametersRef) return; // if the rectangle reference or shape script is null, return.
-		
-		// Update the rectangle's height.
-		rectangleRef.SetHeight(newHeight);
-		
-		// Update the general shape parameters text.
-		_shapeParametersRef.SetAreaText(rectangleRef.GetShapeArea());
-		_shapeParametersRef.SetPerimeterText(rectangleRef.GetShapePerimeter());
+		try
+		{
+			// Update the rectangle's height.
+			rectangleRef.SetHeight(newHeight);
+
+			// Update the general shape parameters text.
+			_shapeParametersRef.SetAreaText(rectangleRef.GetShapeArea());
+			_shapeParametersRef.SetPerimeterText(rectangleRef.GetShapePerimeter());
+		}
+		catch { /* ignored */ }
 	}
 }
