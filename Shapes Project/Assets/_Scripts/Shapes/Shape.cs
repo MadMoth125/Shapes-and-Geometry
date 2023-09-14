@@ -2,23 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shape : MonoBehaviour
+namespace Shapes
 {
-	public Shape()
+	public class Shape : MonoBehaviour
 	{
-	}
+		public Shape()
+		{
+		}
 	
-	/// <summary>
-	/// Calculates and returns the area of the shape.
-	/// </summary>
-	/// <returns>The area of the shape.</returns>
-	public virtual float GetShapeArea() { return 0; }
+		/// <summary>
+		/// Calculates and returns the area of the shape.
+		/// </summary>
+		/// <returns>The area of the shape.</returns>
+		public virtual float GetShapeArea() { return 0; }
 	
-	/// <summary>
-	/// Calculates and returns the perimeter of the shape.
-	/// </summary>
-	/// <returns>The area of the perimeter.</returns>
-	public virtual float GetShapePerimeter() { return 0; }
+		/// <summary>
+		/// Calculates and returns the perimeter of the shape.
+		/// </summary>
+		/// <returns>The area of the perimeter.</returns>
+		public virtual float GetShapePerimeter() { return 0; }
 
-	public virtual void Draw() { }
+		public virtual void Draw() { }
+	}
 }
